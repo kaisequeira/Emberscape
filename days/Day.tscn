@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://1a8dls6bctsd"]
+
+[ext_resource type="Script" path="res://days/Day.cs" id="1_oyg4n"]
+[ext_resource type="Texture2D" uid="uid://dr8h10dkqrw2m" path="res://art/interactables/torches/lightmap/AmbientLightTexture.png" id="2_hugnt"]
+
+[node name="Day" type="Node2D"]
+script = ExtResource("1_oyg4n")
+
+[node name="NightTimer" type="Timer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(384, 216)
+offset = Vector2(128, 72)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(1280, 72)
+energy = 0.8
+blend_mode = 1
+range_item_cull_mask = 4
+texture = ExtResource("2_hugnt")

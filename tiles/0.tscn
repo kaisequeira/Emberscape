@@ -1,0 +1,122 @@
+[gd_scene load_steps=10 format=3 uid="uid://ctp2dodqcfvv3"]
+
+[ext_resource type="Script" path="res://tiles/Tile.cs" id="1_k1vxp"]
+[ext_resource type="Texture2D" uid="uid://b6yaxqckrw8s4" path="res://art/tiles/0.png" id="1_p3e0j"]
+[ext_resource type="Texture2D" uid="uid://0kslr3y5igdb" path="res://art/tiles/0-Start.png" id="2_yu8lj"]
+[ext_resource type="PackedScene" path="res://interactables/stations/0 - FishingSign.tscn" id="3_c3w6d"]
+[ext_resource type="PackedScene" path="res://interactables/stations/0 - Torch.tscn" id="4_5v7oy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xcwln"]
+size = Vector2(155, 23)
+
+[sub_resource type="Animation" id="Animation_2jq2w"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_p3e0j")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_4m8wm"]
+resource_name = "Start"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_yu8lj")]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_86wo8"]
+_data = {
+"RESET": SubResource("Animation_2jq2w"),
+"Start": SubResource("Animation_4m8wm")
+}
+
+[node name="Tile0" type="Node2D"]
+script = ExtResource("1_k1vxp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(128, 72)
+texture = ExtResource("1_p3e0j")
+
+[node name="Stations" type="Node2D" parent="."]
+
+[node name="FishingSign" parent="Stations" instance=ExtResource("3_c3w6d")]
+position = Vector2(164, 108)
+
+[node name="Torch" parent="Stations" instance=ExtResource("4_5v7oy")]
+position = Vector2(128, 108)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(128, 72)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(51.5, 60.5)
+shape = SubResource("RectangleShape2D_xcwln")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_86wo8")
+}

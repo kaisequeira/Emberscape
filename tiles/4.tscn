@@ -1,0 +1,123 @@
+[gd_scene load_steps=10 format=3 uid="uid://b2c1iiyamck5t"]
+
+[ext_resource type="Script" path="res://tiles/Tile.cs" id="1_ak0xw"]
+[ext_resource type="Texture2D" uid="uid://ddv705xmcy3st" path="res://art/tiles/4.png" id="1_dw6o5"]
+[ext_resource type="Texture2D" uid="uid://dw24dqgcdjd8o" path="res://art/tiles/4-Start.png" id="2_rrulr"]
+[ext_resource type="PackedScene" path="res://interactables/stations/4 - AppleTree.tscn" id="3_eremq"]
+[ext_resource type="PackedScene" path="res://interactables/stations/4 - Torch.tscn" id="4_3kn4d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_olxec"]
+size = Vector2(258, 23)
+
+[sub_resource type="Animation" id="Animation_fpj51"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_dw6o5")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ucx5k"]
+resource_name = "Start"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_rrulr")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_soh0f"]
+_data = {
+"RESET": SubResource("Animation_fpj51"),
+"Start": SubResource("Animation_ucx5k")
+}
+
+[node name="Tile4" type="Node2D"]
+script = ExtResource("1_ak0xw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(128, 72)
+texture = ExtResource("1_dw6o5")
+
+[node name="Stations" type="Node2D" parent="."]
+position = Vector2(128, 72)
+
+[node name="AppleTree" parent="Stations" instance=ExtResource("3_eremq")]
+position = Vector2(-1, 48)
+
+[node name="Torch" parent="Stations" instance=ExtResource("4_3kn4d")]
+position = Vector2(-4, 17)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(128, 72)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 60.5)
+shape = SubResource("RectangleShape2D_olxec")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_soh0f")
+}

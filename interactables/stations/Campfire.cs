@@ -14,24 +14,19 @@ public partial class Campfire : Station
 		base._Ready();
 	}
 
-	public override void _Process(double delta)
-	{
-
-	}
-
     public override void Interact()
 	{
 		
 	}
 
-    public override void Disengage(Player player)
+    protected override void Disengaged(Player player)
     {
 
     }
 
-    public override void Engage(Player player)
+    protected override bool Engaged(Player player)
     {
-
+		return true;
     }
 
 	public void OnAnimationFinished(string prevAnimation)

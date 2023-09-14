@@ -3,9 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://dqovpv641dj6s" path="res://art/tiles/3.png" id="1_epg5w"]
 [ext_resource type="Script" path="res://tiles/Tile.cs" id="1_y4xxc"]
 [ext_resource type="Texture2D" uid="uid://takkupl14lna" path="res://art/tiles/3-Start.png" id="2_nj18p"]
-[ext_resource type="PackedScene" path="res://interactables/stations/3 - Torch.tscn" id="2_yh162"]
-[ext_resource type="PackedScene" path="res://interactables/stations/3 - Stall.tscn" id="3_gcjyh"]
-[ext_resource type="PackedScene" path="res://interactables/stations/3 - MysCrate.tscn" id="5_kedvo"]
+[ext_resource type="PackedScene" uid="uid://bn3rbbhgp8aqt" path="res://interactables/stations/3 - Torch.tscn" id="2_yh162"]
+[ext_resource type="PackedScene" uid="uid://c47mqsgco1t1o" path="res://interactables/stations/3 - Stall.tscn" id="3_gcjyh"]
+[ext_resource type="PackedScene" uid="uid://bl2q6x0laxp2b" path="res://interactables/stations/3 - MysCrate.tscn" id="5_kedvo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mh5ql"]
 size = Vector2(258, 23)

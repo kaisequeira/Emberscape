@@ -8,23 +8,19 @@ public partial class Logpile : Station
 		base._Ready();
 	}
 
-	public override void _Process(double delta)
-	{
-
-	}
-
     public override void Interact()
 	{
 		
 	}
 
-    public override void Disengage(Player player)
+    protected override void Disengaged(Player player)
     {
-
+		InvManager.Get().GetInventory(Inventory.Types.Logpile).Disable();
     }
 
-    public override void Engage(Player player)
+    protected override bool Engaged(Player player)
     {
-
+		InvManager.Get().GetInventory(Inventory.Types.Logpile).Enable();
+		return true;
     }
 }

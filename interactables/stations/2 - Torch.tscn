@@ -1,10 +1,16 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3 uid="uid://deq2hyvjotoyb"]
 
 [ext_resource type="Script" path="res://interactables/stations/Torch.cs" id="1_iqdmy"]
 [ext_resource type="Texture2D" uid="uid://cn2t0xd2wwx4h" path="res://art/interactables/torches/2 - Default.png" id="1_pf1lm"]
 [ext_resource type="Texture2D" uid="uid://lyav2dj5eyev" path="res://art/interactables/torches/2 - Start.png" id="2_4mjed"]
 [ext_resource type="Texture2D" uid="uid://2v4l150xvdju" path="res://art/interactables/torches/2 - Burning.png" id="5_6mlpl"]
 [ext_resource type="Texture2D" uid="uid://dcr5idqg8lt0m" path="res://art/interactables/torches/lightmap/LightTexture.webp" id="5_jbfuy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6gmb"]
+size = Vector2(6, 7)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rs7wr"]
+radius = 25.0
 
 [sub_resource type="Animation" id="Animation_hj1mh"]
 resource_name = "Burn"
@@ -157,7 +163,9 @@ _data = {
 "Start": SubResource("Animation_xijr5")
 }
 
-[node name="Torch" type="Node2D"]
+[node name="Torch" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_iqdmy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -169,9 +177,23 @@ energy = 0.0
 range_item_cull_mask = 4
 texture = ExtResource("5_jbfuy")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3.5)
+shape = SubResource("RectangleShape2D_f6gmb")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -3)
+shape = SubResource("CircleShape2D_rs7wr")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_2hb0s")
 }
 
+[connection signal="body_entered" from="Area2D" to="." method="AddToPlayer"]
+[connection signal="body_exited" from="Area2D" to="." method="RemoveFromPlayer"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

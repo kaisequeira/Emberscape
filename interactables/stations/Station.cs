@@ -13,6 +13,7 @@ public abstract partial class Station : Interactable
 
 	public override void _Ready()
 	{
+		base._Ready();
 		AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 	}
 

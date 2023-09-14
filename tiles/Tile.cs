@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public partial class Tile : Node2D
 {
+	public static readonly Vector2 Size = new Vector2(256, 144);
+
 	private AnimationPlayer AnimationPlayer;
 	private int tileNum;
 	private List<Station> stations = new List<Station>();

@@ -1,8 +1,53 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3 uid="uid://otbctgic22xo"]
 
 [ext_resource type="Script" path="res://interactables/stations/FishingSign.cs" id="1_kyli1"]
 [ext_resource type="Texture2D" uid="uid://tvtunna35qb1" path="res://art/interactables/fishing/default.png" id="1_mtivj"]
 [ext_resource type="Texture2D" uid="uid://d0i2t7hpm6cga" path="res://art/interactables/fishing/start - Anglenose.png" id="2_6u5ck"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2xgfo"]
+size = Vector2(18, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kci3e"]
+radius = 25.0
+
+[sub_resource type="Animation" id="Animation_yhavv"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_mtivj")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
 
 [sub_resource type="Animation" id="Animation_0qhau"]
 resource_name = "Start"
@@ -44,59 +89,37 @@ tracks/2/keys = {
 "values": [0, 1, 2]
 }
 
-[sub_resource type="Animation" id="Animation_yhavv"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("1_mtivj")]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D:hframes")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [1]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tdfxp"]
 _data = {
 "RESET": SubResource("Animation_yhavv"),
 "Start": SubResource("Animation_0qhau")
 }
 
-[node name="FishingSign" type="Node2D"]
+[node name="FishingSign" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 0
 script = ExtResource("1_kyli1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -16)
 texture = ExtResource("1_mtivj")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_2xgfo")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, -10)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_kci3e")
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_tdfxp")
 }
+
+[connection signal="body_entered" from="Area2D" to="." method="AddToPlayer"]
+[connection signal="body_exited" from="Area2D" to="." method="RemoveFromPlayer"]

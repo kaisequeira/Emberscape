@@ -15,10 +15,12 @@ public partial class Day : Node2D
 
 	private Timer NightTimer;
 	private Camera2D ActiveCamera;
+	private CustomSignals CS;
 	
 	private int dayNum;
 	private int currTileOffset = 0;
 	private List<Tile> tiles = new List<Tile>();
+	private List<InteractableItem> items = new List<InteractableItem>();
 	private Player player;
 
 	public void Initialise(int dayNum)
@@ -32,6 +34,9 @@ public partial class Day : Node2D
 		NightTimer = GetNode<Timer>("NightTimer");
 		ActiveCamera = GetNode<Camera2D>("Camera2D");
 		
+		CS = GetNode<CustomSignals>("/root/CustomSignals");
+		CS.Connect("SpawnItem", new Callable(this, nameof(SpawnItem)));
+
 		TileLoader();
 		LoadPlayer();
 	}
@@ -39,6 +44,11 @@ public partial class Day : Node2D
 	public int GetDayCount()
 	{
 		return dayNum;
+	}
+
+	public Player GetPlayer()
+	{
+		return player;
 	}
 
     public override void _Process(double delta)
@@ -69,7 +79,7 @@ public partial class Day : Node2D
 
 			PackedScene tileScene = (PackedScene) ResourceLoader.Load(tileDirectory + tileIndex + ".tscn");
 			Tile tile = (Tile)tileScene.Instantiate();
-			tile.Position = new Vector2(i * TYPES.TILE_SIZE.X, 0);
+			tile.Position = new Vector2(i * Tile.Size.X, 0);
 			tile.Initialise(tileIndex);
 			tiles.Add(tile);
 			AddChild(tile);
@@ -99,12 +109,24 @@ public partial class Day : Node2D
 
 	private void UpdateActiveCamera(Vector2 playerPosition)
 	{
-		int tileOffset = (int)Mathf.Floor(playerPosition.X / TYPES.TILE_SIZE.X);
+		int tileOffset = (int)Mathf.Floor(playerPosition.X / Tile.Size.X);
 		if (currTileOffset != tileOffset)
 		{
-			ActiveCamera.GlobalPosition = new Vector2(tileOffset * TYPES.TILE_SIZE.X, 0);
+			ActiveCamera.GlobalPosition = new Vector2(tileOffset * Tile.Size.X, 0);
 			currTileOffset = tileOffset;
 		}
+	}
+
+	public void SpawnItem(ItemStack itemStack, Vector2 velocity, Vector2 position)
+	{
+		InteractableItem droppedItem = ((PackedScene) ResourceLoader.Load("res://interactables/InteractableItem.tscn")).Instantiate() as InteractableItem;
+		items.Add(droppedItem);
+		AddChild(droppedItem);
+		droppedItem.Initialise(
+			itemStack,
+			position == Vector2.Inf ? player.GlobalPosition + new Vector2(0, -10) : position,
+			position == Vector2.Inf ? new Vector2(player.IsFacingRight() ? 30 : -30, -10) : velocity
+		);
 	}
 
 }

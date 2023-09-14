@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5h5rdyfdaatk"]
+
+[ext_resource type="Script" path="res://ui/UI.cs" id="1_vdpii"]
+[ext_resource type="PackedScene" uid="uid://cpd648clb7pw" path="res://ui/NightTracker.tscn" id="2_bksgw"]
+[ext_resource type="PackedScene" uid="uid://bwoa47oh3gm4c" path="res://ui/Inventory.tscn" id="2_i6m15"]
+
+[node name="UI" type="CanvasLayer"]
+script = ExtResource("1_vdpii")
+
+[node name="InventoryContainer" type="VBoxContainer" parent="."]
+offset_left = 25.0
+offset_top = 21.0
+offset_right = 65.0
+offset_bottom = 96.0
+theme_override_constants/separation = 25
+
+[node name="Inventory" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
+layout_mode = 2
+slotCount = 4
+columns = 4
+
+[node name="Inventory2" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
+layout_mode = 2
+type = 1
+slotCount = 1
+columns = 1
+
+[node name="Inventory3" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
+layout_mode = 2
+type = 2
+slotCount = 6
+columns = 4
+
+[node name="Inventory4" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
+layout_mode = 2
+type = 3
+slotCount = 4
+columns = 4
+
+[node name="NightTracker" parent="." instance=ExtResource("2_bksgw")]
+offset_left = -289.0
+offset_top = 25.0
+offset_right = -53.0
+offset_bottom = 309.0

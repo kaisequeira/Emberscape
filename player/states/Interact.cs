@@ -14,8 +14,6 @@ public partial class Interact : State
     public override State Compute(Player player, double delta)
     {
 		player.SetVelocity(Vector2.Zero);
-
-		// run logic for interaction
 		interactable.Interact();
 
 		if (Input.IsActionJustPressed("escape"))

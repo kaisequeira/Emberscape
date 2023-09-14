@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://tiles/Tile.cs" id="1_k1vxp"]
 [ext_resource type="Texture2D" uid="uid://b6yaxqckrw8s4" path="res://art/tiles/0.png" id="1_p3e0j"]
 [ext_resource type="Texture2D" uid="uid://0kslr3y5igdb" path="res://art/tiles/0-Start.png" id="2_yu8lj"]
-[ext_resource type="PackedScene" path="res://interactables/stations/0 - FishingSign.tscn" id="3_c3w6d"]
-[ext_resource type="PackedScene" path="res://interactables/stations/0 - Torch.tscn" id="4_5v7oy"]
+[ext_resource type="PackedScene" uid="uid://otbctgic22xo" path="res://interactables/stations/0 - FishingSign.tscn" id="3_c3w6d"]
+[ext_resource type="PackedScene" uid="uid://bqi17ip72r4mu" path="res://interactables/stations/0 - Torch.tscn" id="4_5v7oy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcwln"]
 size = Vector2(155, 23)
@@ -82,7 +82,7 @@ tracks/2/path = NodePath("Sprite2D:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.6),
+"times": PackedFloat32Array(0, 0.4, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [0, 1, 2]

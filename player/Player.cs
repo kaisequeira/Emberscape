@@ -1,61 +1,95 @@
 using Godot;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D
 {
 	private AnimationPlayer Animator;
 	private RayCast2D GroundDetection;
+	private CustomSignals CS;
 
-	private Interactable currInteractable = null;
+	private List<Interactable> interactables = new List<Interactable>();
+	private Interactable curInteractable = null;
+
+	private int selectedSlot = 0;
 	private State currentState = new Idle();
 	private bool facingRight = true;
+	private Inventory playerInv;
 
 	public override void _Ready()
 	{
 		Animator = GetNode<AnimationPlayer>("AnimationPlayer");
 		GroundDetection = GetNode<RayCast2D>("RayCast2D");
+		CS = GetNode<CustomSignals>("/root/CustomSignals");
+
+		playerInv = InvManager.Get().GetInventory(Inventory.Types.Player);
+		playerInv.SelectSlot(selectedSlot);
 	}
 
 	public override void _PhysicsProcess(double delta)
-	{
-		SetDirectionFacing();
+	{	
+		UpdateClosestInteractable();
+
 		currentState.UpdateInputs();
 		currentState = currentState.Compute(this, delta);
+
+		SetDirectionFacing();
 		MoveAndSlide();
 	}
 
     public override void _Input(InputEvent @event)
     {
-		if (@event.IsActionPressed("numeric") && !(currentState is Interact)) {
-			if (@event is InputEventKey eventKey) {
-				//Select Slot logic ((int)eventKey.Keycode) % 4194390 - 49
+		// Handle select slot
+		if (@event.IsActionPressed("numeric") && !(currentState is Interact))
+		{
+			if (@event is InputEventKey eventKey)
+			{
+				int inputSlot = ((int)eventKey.Keycode) % 4194390 - 49;
+				selectedSlot = Math.Min(inputSlot, playerInv.GetSlots().Count - 1);
+				playerInv.SelectSlot(selectedSlot);
 			}
 		}
 
-		// change to include engage
-		if (@event.IsActionPressed("interact") && !(currentState is Interact))
+		// Handle interactions
+		if (@event.IsActionPressed("interact") && !(currentState is Interact) && curInteractable != null)
 		{
-			currentState = new Interact(this, currInteractable);
+			if (curInteractable != null && curInteractable.Engage(this))
+			{
+				currentState = new Interact(this, curInteractable);
+			}
+			else if (curInteractable != null)
+			{
+				curInteractable.Disengage(this);
+			}
 		}
 
-		// add escape check for interactable - include disengage
+		// Handle menu
+		if (@event.IsActionPressed("escape") && !(currentState is Interact))
+		{
 
-		// add escape check for menu
+		}
 
+		// Handle item drop
 		if (@event.IsActionPressed("drop") && !(currentState is Interact))
 		{
-			// item drop logic
-		}
-    }
+			ItemStack itemStack = Inventory.DropSlot(playerInv.GetSlots()[selectedSlot]);
 
-	private void SetDirectionFacing()
-	{ 
-		if (((currentState.GetXInput() < 0 && facingRight) || (currentState.GetXInput() > 0 && !facingRight)) && (!(currentState is Interact))) 
-		{
-			Scale = new Vector2(Scale.X * -1, Scale.Y);
-			facingRight = !facingRight;
+			if (!itemStack.IsEmpty())
+			{
+				CS.EmitSignal("SpawnItem", itemStack, new Vector2(), Vector2.Inf);
+			}
 		}
+	}
+
+	public int GetSelected()
+	{
+		return selectedSlot;
+	}
+
+	public Vector2 GetVelocity()
+	{
+		return Velocity;
 	}
 
 	public void SetVelocity(Vector2 velocity)
@@ -68,9 +102,18 @@ public partial class Player : CharacterBody2D
 		Velocity = new Vector2(x ?? Velocity.X, y ?? Velocity.Y);
 	}
 
-	public Vector2 GetVelocity()
+	private void SetDirectionFacing()
+	{ 
+		if (((currentState.GetXInput() < 0 && facingRight) || (currentState.GetXInput() > 0 && !facingRight)) && (!(currentState is Interact))) 
+		{
+			Scale = new Vector2(Scale.X * -1, Scale.Y);
+			facingRight = !facingRight;
+		}
+	}
+
+	public bool IsFacingRight()
 	{
-		return Velocity;
+		return facingRight;
 	}
 
 	public bool IsGrounded()
@@ -78,9 +121,29 @@ public partial class Player : CharacterBody2D
 		return GroundDetection.IsColliding();
 	}
 
-	public bool IsFacingRight()
+	public void AddInteractable(Interactable interactable)
 	{
-		return facingRight;
+		interactables.Add(interactable);
+	}
+
+	public void RemoveInteractable(Interactable interactable)
+	{
+		interactables.Remove(interactable);
+	}
+
+	private void UpdateClosestInteractable()
+	{
+		Interactable newClosestInteractable = interactables
+			.Where(interactable => interactable.CanInteract())
+			.OrderBy(interactable => GlobalPosition.DistanceTo(interactable.GetPosition()))
+			.FirstOrDefault();
+
+		if (curInteractable != newClosestInteractable)
+		{
+			if (IsInstanceValid(curInteractable)) curInteractable?.HighlightOff();
+			curInteractable = newClosestInteractable;
+			curInteractable?.HighlightOn();
+		}
 	}
 
 	public void PlayAnimation(String animationName)

@@ -2,12 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://c6jksbdha2got" path="res://art/tiles/1.png" id="1_fl8x7"]
 [ext_resource type="Script" path="res://tiles/Tile.cs" id="1_vr8co"]
-[ext_resource type="PackedScene" path="res://interactables/stations/1 - Campfire.tscn" id="2_2p8ek"]
+[ext_resource type="PackedScene" uid="uid://dy7tnru047a7k" path="res://interactables/stations/1 - Campfire.tscn" id="2_2p8ek"]
 [ext_resource type="Texture2D" uid="uid://bvabtx83vm1rl" path="res://art/tiles/1-Start.png" id="2_usb03"]
-[ext_resource type="PackedScene" path="res://interactables/stations/1 - Crate.tscn" id="4_ygnal"]
-[ext_resource type="PackedScene" path="res://interactables/stations/1 - Logpile.tscn" id="5_8760t"]
-[ext_resource type="PackedScene" path="res://interactables/stations/1 - Stool.tscn" id="6_hnepn"]
-[ext_resource type="PackedScene" path="res://interactables/stations/1 - Stump.tscn" id="7_gpsgw"]
+[ext_resource type="PackedScene" uid="uid://cdk5gadra8nm1" path="res://interactables/stations/1 - Crate.tscn" id="4_ygnal"]
+[ext_resource type="PackedScene" uid="uid://0kxeifa3jxq6" path="res://interactables/stations/1 - Logpile.tscn" id="5_8760t"]
+[ext_resource type="PackedScene" uid="uid://bu7i2gbwmt3px" path="res://interactables/stations/1 - Stool.tscn" id="6_hnepn"]
+[ext_resource type="PackedScene" uid="uid://dbpgvx2iwls1k" path="res://interactables/stations/1 - Stump.tscn" id="7_gpsgw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xd2uv"]
 size = Vector2(258, 23)
@@ -107,7 +107,7 @@ texture = ExtResource("1_fl8x7")
 [node name="Stations" type="Node2D" parent="."]
 
 [node name="Campfire" parent="Stations" instance=ExtResource("2_2p8ek")]
-position = Vector2(127.181, 120.252)
+position = Vector2(125, 120.252)
 
 [node name="Crate" parent="Stations" instance=ExtResource("4_ygnal")]
 position = Vector2(172, 120)

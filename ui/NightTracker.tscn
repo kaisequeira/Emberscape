@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpd648clb7pw"]
+
+[ext_resource type="FontFile" uid="uid://h2hqyveuedjl" path="res://art/ui/themes/Tiny_Timmy_Font-Dfonts.org/Timmy-Regular.ttf" id="1_1y2ck"]
+[ext_resource type="Script" path="res://ui/NightTracker.cs" id="1_8njby"]
+
+[node name="NightTracker" type="VBoxContainer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -236.0
+offset_bottom = 284.0
+grow_horizontal = 0
+script = ExtResource("1_8njby")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Night" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_1y2ck")
+theme_override_font_sizes/font_size = 140
+text = "Night "
+horizontal_alignment = 2
+
+[node name="Number" type="Label" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_1y2ck")
+theme_override_font_sizes/font_size = 140
+text = "1"
+
+[node name="Time" type="Label" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_1y2ck")
+theme_override_font_sizes/font_size = 114
+text = "12:10"
+horizontal_alignment = 2

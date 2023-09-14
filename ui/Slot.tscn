@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdvv46t3ie5pr"]
+
+[ext_resource type="Texture2D" uid="uid://dqcx6hci2jdhh" path="res://art/ui/Slot.png" id="1_t1duk"]
+[ext_resource type="Script" path="res://ui/Slot.cs" id="2_b0t6r"]
+[ext_resource type="Texture2D" uid="uid://c8n5xacicsc0" path="res://art/items/empty.png" id="3_2p0e6"]
+[ext_resource type="FontFile" uid="uid://h2hqyveuedjl" path="res://art/ui/themes/Tiny_Timmy_Font-Dfonts.org/Timmy-Regular.ttf" id="3_idivj"]
+[ext_resource type="Texture2D" uid="uid://bqnf4dtlbh03q" path="res://art/ui/Selected.png" id="4_jl3s4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0nh4a"]
+texture = ExtResource("1_t1duk")
+
+[node name="Slot" type="Panel"]
+custom_minimum_size = Vector2(180, 180)
+offset_left = 2.0
+offset_top = 3.0
+offset_right = 182.0
+offset_bottom = 183.0
+scale = Vector2(0.96219, 1)
+theme_override_styles/panel = SubResource("StyleBoxTexture_0nh4a")
+script = ExtResource("2_b0t6r")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_2p0e6")
+
+[node name="Selected" type="TextureRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_jl3s4")
+
+[node name="Quantity" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -59.4417
+offset_top = -150.0
+offset_right = -19.4417
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(1, 0.982849)
+theme_override_fonts/font = ExtResource("3_idivj")
+theme_override_font_sizes/font_size = 114
+text = "x"

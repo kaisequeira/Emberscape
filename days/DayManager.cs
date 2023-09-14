@@ -2,46 +2,39 @@ using Godot;
 
 public partial class DayManager : Node
 {
-    private PackedScene DayScene;
-    private Control UI;
-    private Counter Counter;
-    private Day currentDay;
-    
     [Export]
     private SubViewport Viewport;
+    private PackedScene UIScene;
+    private UI ui;
 
+    private PackedScene DayScene;
+    private Day day;    
     static private int dayCounter;
 
     public override void _Ready()
     {
-        UI = GetNode<Control>("Control");
-        Counter = UI.GetNode<Counter>("Counter");
         DayScene = GD.Load<PackedScene>("res://days/Day.tscn");
-        LoadDay(false);
+        UIScene = GD.Load<PackedScene>("res://ui/UI.tscn");
+        LoadDay(0);
     }
 
-    private void DeleteDay()
+    private void LoadDay(int offset)
     {
-        currentDay.QueueFree();
+        dayCounter += offset;
+        
+        ui = UIScene.Instantiate<UI>();
+        AddChild(ui);
+        // Initialise UI
+
+        day = DayScene.Instantiate<Day>();
+        Viewport.AddChild(day);
+        day.Initialise(dayCounter);
     }
 
-    private void LoadDay(bool loadNext)
+    public void EndDay()
     {
-        if (loadNext) dayCounter++;
-        currentDay = DayScene.Instantiate<Day>();
-        currentDay.Initialise(dayCounter);
-        Viewport.AddChild(currentDay);
+        day.QueueFree();
+        ui.QueueFree();
+        LoadDay(1);
     }
-
-    public void EndCurrentDay()
-    {
-        DeleteDay();
-        LoadDay(true);
-    }
-
-    public void UpdateUI()
-    {
-        Counter.SetCounter(currentDay.GetDayCount());
-    }
-
 }

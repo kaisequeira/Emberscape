@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://tiles/Tile.cs" id="1_ak0xw"]
 [ext_resource type="Texture2D" uid="uid://ddv705xmcy3st" path="res://art/tiles/4.png" id="1_dw6o5"]
 [ext_resource type="Texture2D" uid="uid://dw24dqgcdjd8o" path="res://art/tiles/4-Start.png" id="2_rrulr"]
-[ext_resource type="PackedScene" path="res://interactables/stations/4 - AppleTree.tscn" id="3_eremq"]
-[ext_resource type="PackedScene" path="res://interactables/stations/4 - Torch.tscn" id="4_3kn4d"]
+[ext_resource type="PackedScene" uid="uid://c41hfrbsown1b" path="res://interactables/stations/4 - AppleTree.tscn" id="3_eremq"]
+[ext_resource type="PackedScene" uid="uid://d2bcfmgnhofnk" path="res://interactables/stations/4 - Torch.tscn" id="4_3kn4d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_olxec"]
 size = Vector2(258, 23)
@@ -105,7 +105,7 @@ texture = ExtResource("1_dw6o5")
 position = Vector2(128, 72)
 
 [node name="AppleTree" parent="Stations" instance=ExtResource("3_eremq")]
-position = Vector2(-1, 48)
+position = Vector2(-2, 48)
 
 [node name="Torch" parent="Stations" instance=ExtResource("4_3kn4d")]
 position = Vector2(-4, 17)

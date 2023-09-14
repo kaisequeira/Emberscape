@@ -6,11 +6,7 @@ public partial class Torch : Station
 	public override void _Ready()
 	{
 		base._Ready();
-	}
-
-	public override void _Process(double delta)
-	{
-
+		Enable();
 	}
 
     public override void Interact()
@@ -18,20 +14,21 @@ public partial class Torch : Station
 		
 	}
 
-    public override void Disengage(Player player)
+    protected override void Disengaged(Player player)
     {
 
     }
 
-    public override void Engage(Player player)
+    protected override bool Engaged(Player player)
     {
 		GetParentTile().LightScene();
+		return false;
     }
 
 	private void SetTorchColliderPos()
 	{
-		int tileOffset = (int)Mathf.Floor(GlobalPosition.X / TYPES.TILE_SIZE.X);
-		GlobalPosition = new Vector2(TYPES.TILE_SIZE.X/2 + tileOffset * TYPES.TILE_SIZE.X, 100);
+		int tileOffset = (int)Mathf.Floor(GlobalPosition.X / Tile.Size.X);
+		GlobalPosition = new Vector2(Tile.Size.X/2 + tileOffset * Tile.Size.X, 100);
 	}
 
 	public void OnAnimationFinished(string prevAnimation)

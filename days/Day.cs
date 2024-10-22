@@ -14,36 +14,49 @@ public partial class Day : Node2D
 	private const int SPAWN_OFFSET_Y = 120;
 
 	private Timer NightTimer;
+	private float maxTime;
+
 	private Camera2D ActiveCamera;
 	private CustomSignals CS;
 	
-	private int dayNum;
 	private int currTileOffset = 0;
 	private List<Tile> tiles = new List<Tile>();
 	private List<InteractableItem> items = new List<InteractableItem>();
 	private Player player;
 
-	public void Initialise(int dayNum)
-	{
-		this.dayNum = dayNum;
-	}
+	private float maxCampfireCapacity;
+	private float maxFoodCapacity;
+	private float campfireWarnPercentage = 0.5f;
+	private float foodWarnPercentage = 0.5f;
+
+	private float campfireCapacity;
+	private float foodCapacity;
 
 	public override void _Ready()
 	{
 		RenderingServer.SetDefaultClearColor(Colors.Black);
 		NightTimer = GetNode<Timer>("NightTimer");
 		ActiveCamera = GetNode<Camera2D>("Camera2D");
-		
+
 		CS = GetNode<CustomSignals>("/root/CustomSignals");
-		CS.Connect("SpawnItem", new Callable(this, nameof(SpawnItem)));
+		CS.Connect(CustomSignals.SignalName.SpawnItem, new Callable(this, nameof(SpawnItem)));
+		CS.Connect(CustomSignals.SignalName.ReFuelFire, new Callable(this, nameof(FuelCampfire)));
+		CS.Connect(CustomSignals.SignalName.ConsumeFood, new Callable(this, nameof(EatFood)));
 
 		TileLoader();
 		LoadPlayer();
+
+		maxTime = (float) NightTimer.WaitTime;
+		NightTimer.Start();
 	}
 
-	public int GetDayCount()
+	public void Initialise(float foodCapacity, float campfireCapacity)
 	{
-		return dayNum;
+		this.foodCapacity = foodCapacity;
+		this.campfireCapacity = campfireCapacity;
+
+		maxCampfireCapacity = campfireCapacity;
+		maxFoodCapacity = foodCapacity;
 	}
 
 	public Player GetPlayer()
@@ -54,7 +67,57 @@ public partial class Day : Node2D
     public override void _Process(double delta)
     {
         UpdateActiveCamera(player.GlobalPosition);
+		campfireCapacity -= (float) delta;
+		foodCapacity -= (float) delta;
+
+		UpdateFoodIndicator();
+		UpdateFireIndicator();
+		UpdateTimer();
     }
+
+	private void UpdateFoodIndicator()
+	{
+		if (foodCapacity <= 0)
+		{
+
+		}
+		else if (foodCapacity < (foodWarnPercentage * maxFoodCapacity))
+		{
+			player.AddModifier("hunger", 0.3f + 0.7f * (foodCapacity /(foodWarnPercentage * maxFoodCapacity)));
+			UI.Get().GetIndicator(UI.IndicatorType.Food).SetAnimSpeed(
+				0.3f * (foodCapacity /(foodWarnPercentage * maxFoodCapacity))
+			);
+		}
+		else
+		{
+			player.RemoveModifier("hunger");
+			UI.Get().GetIndicator(UI.IndicatorType.Food).QueueFree();
+		}
+	}
+
+	private void UpdateFireIndicator()
+	{
+		if (campfireCapacity <= 0)
+		{
+			PlayerDied();
+		}
+		else if (campfireCapacity < (campfireWarnPercentage * maxCampfireCapacity))
+		{
+			UI.Get().ChangeScreenOpacity(
+				1 - campfireCapacity / (campfireWarnPercentage * maxCampfireCapacity)
+			);
+		}
+		else
+		{
+			UI.Get().ChangeScreenOpacity(0);
+		}
+	}
+
+	private void UpdateTimer()
+	{
+		float percentage = 1 - (float) NightTimer.TimeLeft / maxTime;
+		UI.Get().SetTimeLabel((float)(Math.Round(percentage / (1.0f / 72.0f)) * (1.0f / 72.0f)));
+	}
 
     private void TileLoader()
 	{
@@ -119,14 +182,41 @@ public partial class Day : Node2D
 
 	public void SpawnItem(ItemStack itemStack, Vector2 velocity, Vector2 position)
 	{
-		InteractableItem droppedItem = ((PackedScene) ResourceLoader.Load("res://interactables/InteractableItem.tscn")).Instantiate() as InteractableItem;
+		InteractableItem droppedItem = ((PackedScene) ResourceLoader.Load("res://interactables/item/InteractableItem.tscn")).Instantiate() as InteractableItem;
 		items.Add(droppedItem);
 		AddChild(droppedItem);
 		droppedItem.Initialise(
 			itemStack,
 			position == Vector2.Inf ? player.GlobalPosition + new Vector2(0, -10) : position,
-			position == Vector2.Inf ? new Vector2(player.IsFacingRight() ? 30 : -30, -10) : velocity
+			velocity == Vector2.Inf ? new Vector2(player.IsFacingRight() ? 30 : -30, -10) : velocity
 		);
+	}
+
+	public void FuelCampfire(float fuelAmount)
+	{
+		campfireCapacity += fuelAmount;
+		campfireCapacity = Math.Clamp(campfireCapacity, 0, maxCampfireCapacity);
+	}
+
+	public void EatFood(float fuelAmount)
+	{
+		foodCapacity += fuelAmount;
+		foodCapacity = Math.Clamp(foodCapacity, 0, maxFoodCapacity);
+	}
+
+	public void PlayerDied()
+	{
+		// Reset all progress
+		GD.Print("Game over");
+		// TransitionToScreen(game over)
+	}
+
+	public void DayEnded()
+	{
+		// increment day count
+		GD.Print("Day ended");
+		CS.EmitSignal(CustomSignals.SignalName.DayEnded);
+		// TransitionToScreen(next day)
 	}
 
 }

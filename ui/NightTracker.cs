@@ -19,9 +19,18 @@ public partial class NightTracker : VBoxContainer
 		Number.Text = $"{dayNum}";
 	}
 	
-	public void UpdateTime(string time)
+	public void UpdateTime(float percentage)
 	{
-		TimeLabel.Text = time;
-	}
+		int totalMinutes = 6 * 60;
 
+		int minutes = (int) (totalMinutes * percentage % 60);
+		int hours = (int) (totalMinutes * percentage / 60);
+
+		if (hours == 0)
+			hours = 12;
+
+		string formattedTime = string.Format("{0:D2}:{1:D2}am", hours, minutes);
+
+		TimeLabel.Text = formattedTime;
+	}
 }

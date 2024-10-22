@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://crjulu3g23bh7"]
+
+[ext_resource type="Script" path="res://ui/indicators/Indicator.cs" id="1_rktn0"]
+[ext_resource type="Texture2D" uid="uid://cwx86r08jcn22" path="res://art/ui/indicators/food/FoodIndicator1.png" id="1_x11q8"]
+
+[node name="FoodIndicator" type="TextureRect"]
+custom_minimum_size = Vector2(150, 190)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 8
+mouse_filter = 2
+texture = ExtResource("1_x11q8")
+stretch_mode = 5
+script = ExtResource("1_rktn0")
+frames = 2

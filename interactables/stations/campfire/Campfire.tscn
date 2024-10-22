@@ -1,0 +1,202 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://interactables/stations/campfire/Campfire.cs" id="1_0ftpp"]
+[ext_resource type="Texture2D" uid="uid://bcit8bdvspib0" path="res://art/interactables/torches/1 - Default.png" id="1_p7vfc"]
+[ext_resource type="Texture2D" uid="uid://birpeb1jv1mx" path="res://art/interactables/torches/1 - Start.png" id="2_fdu85"]
+[ext_resource type="Texture2D" uid="uid://ca2ks46nw8dh5" path="res://art/interactables/torches/1 - Burning.png" id="3_fpxmc"]
+[ext_resource type="Texture2D" uid="uid://dcr5idqg8lt0m" path="res://art/interactables/torches/lightmap/LightTexture.webp" id="3_y5j7u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gjrtg"]
+size = Vector2(23, 3)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_if5iw"]
+radius = 25.0
+
+[sub_resource type="Animation" id="Animation_gqtcn"]
+resource_name = "Burn"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_fpxmc")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [4]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_rgeq0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("1_p7vfc"), ExtResource("1_p7vfc")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [1, 1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_fc2v1"]
+resource_name = "Start"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_fdu85")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("PointLight2D:energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.8]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_du3lx"]
+_data = {
+"Burn": SubResource("Animation_gqtcn"),
+"RESET": SubResource("Animation_rgeq0"),
+"Start": SubResource("Animation_fc2v1")
+}
+
+[node name="Campfire" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_0ftpp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1, -32)
+texture = ExtResource("1_p7vfc")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(1, -4)
+energy = 0.0
+range_item_cull_mask = 4
+shadow_enabled = true
+shadow_item_cull_mask = 4
+texture = ExtResource("3_y5j7u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_gjrtg")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -10)
+shape = SubResource("CircleShape2D_if5iw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_du3lx")
+}
+
+[connection signal="body_entered" from="Area2D" to="." method="AddToPlayer"]
+[connection signal="body_exited" from="Area2D" to="." method="RemoveFromPlayer"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="OnAnimationFinished"]

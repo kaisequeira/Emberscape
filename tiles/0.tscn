@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://ctp2dodqcfvv3"]
+[gd_scene load_steps=11 format=3 uid="uid://bsicj6jal6gpj"]
 
 [ext_resource type="Script" path="res://tiles/Tile.cs" id="1_k1vxp"]
 [ext_resource type="Texture2D" uid="uid://b6yaxqckrw8s4" path="res://art/tiles/0.png" id="1_p3e0j"]
 [ext_resource type="Texture2D" uid="uid://0kslr3y5igdb" path="res://art/tiles/0-Start.png" id="2_yu8lj"]
-[ext_resource type="PackedScene" uid="uid://otbctgic22xo" path="res://interactables/stations/0 - FishingSign.tscn" id="3_c3w6d"]
-[ext_resource type="PackedScene" uid="uid://bqi17ip72r4mu" path="res://interactables/stations/0 - Torch.tscn" id="4_5v7oy"]
+[ext_resource type="PackedScene" path="res://interactables/stations/torches/0 - Torch.tscn" id="4_5v7oy"]
+[ext_resource type="PackedScene" uid="uid://bo5l7i3in1hi8" path="res://interactables/stations/fishing/FishingSign - Left.tscn" id="6_acm06"]
+[ext_resource type="PackedScene" uid="uid://dxoy4eim6dywp" path="res://misc/Water.tscn" id="6_pnecb"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xcwln"]
 size = Vector2(155, 23)
@@ -103,11 +104,13 @@ texture = ExtResource("1_p3e0j")
 
 [node name="Stations" type="Node2D" parent="."]
 
-[node name="FishingSign" parent="Stations" instance=ExtResource("3_c3w6d")]
-position = Vector2(164, 108)
-
 [node name="Torch" parent="Stations" instance=ExtResource("4_5v7oy")]
 position = Vector2(128, 108)
+
+[node name="FishingSign - Left" parent="Stations" node_paths=PackedStringArray("leftBound", "rightBound") instance=ExtResource("6_acm06")]
+position = Vector2(164, 108)
+leftBound = NodePath("../../leftBound")
+rightBound = NodePath("../../rightBound")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(128, 72)
@@ -116,7 +119,16 @@ position = Vector2(128, 72)
 position = Vector2(51.5, 60.5)
 shape = SubResource("RectangleShape2D_xcwln")
 
+[node name="Water" parent="." instance=ExtResource("6_pnecb")]
+position = Vector2(128, 156)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_86wo8")
 }
+
+[node name="leftBound" type="Node2D" parent="."]
+position = Vector2(-11, 139)
+
+[node name="rightBound" type="Node2D" parent="."]
+position = Vector2(83, 139)

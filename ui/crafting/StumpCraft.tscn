@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://pcplu8pxneil"]
+
+[ext_resource type="Texture2D" uid="uid://d050wi26o6dgi" path="res://art/ui/buttons/StumpCraft1.png" id="1_m4qf4"]
+[ext_resource type="Texture2D" uid="uid://b5pw8h2e5n47t" path="res://art/ui/buttons/StumpCraft2.png" id="2_p7hl0"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ri2sy"]
+texture = ExtResource("1_m4qf4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wn0jc"]
+texture = ExtResource("1_m4qf4")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3acv"]
+texture = ExtResource("2_p7hl0")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6baca"]
+
+[node name="StumpCraft" type="Button"]
+custom_minimum_size = Vector2(100, 100)
+offset_right = 100.0
+offset_bottom = 100.0
+size_flags_horizontal = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_ri2sy")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wn0jc")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_i3acv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_6baca")
+action_mode = 0

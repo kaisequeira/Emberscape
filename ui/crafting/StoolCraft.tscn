@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://cdte2ce7xnsrp"]
+
+[ext_resource type="Texture2D" uid="uid://bkk6e6bnpnp7h" path="res://art/ui/buttons/StoolCraft1.png" id="1_aspu2"]
+[ext_resource type="Texture2D" uid="uid://dgqjrc2q6knf5" path="res://art/ui/buttons/StoolCraft2.png" id="2_tcgxy"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ri2sy"]
+texture = ExtResource("1_aspu2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wn0jc"]
+texture = ExtResource("1_aspu2")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i3acv"]
+texture = ExtResource("2_tcgxy")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wc2ap"]
+
+[node name="StoolCraft" type="Button"]
+custom_minimum_size = Vector2(100, 100)
+offset_right = 8.0
+offset_bottom = 8.0
+size_flags_horizontal = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_ri2sy")
+theme_override_styles/hover = SubResource("StyleBoxTexture_wn0jc")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_i3acv")
+theme_override_styles/focus = SubResource("StyleBoxTexture_wc2ap")
+action_mode = 0

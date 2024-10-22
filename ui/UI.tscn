@@ -1,44 +1,180 @@
-[gd_scene load_steps=4 format=3 uid="uid://c5h5rdyfdaatk"]
+[gd_scene load_steps=13 format=3 uid="uid://cs3iac15uj8lu"]
 
 [ext_resource type="Script" path="res://ui/UI.cs" id="1_vdpii"]
 [ext_resource type="PackedScene" uid="uid://cpd648clb7pw" path="res://ui/NightTracker.tscn" id="2_bksgw"]
-[ext_resource type="PackedScene" uid="uid://bwoa47oh3gm4c" path="res://ui/Inventory.tscn" id="2_i6m15"]
+[ext_resource type="PackedScene" uid="uid://db6ifmtk30kmv" path="res://ui/inventory/Inventory.tscn" id="2_i6m15"]
+[ext_resource type="Texture2D" uid="uid://vbwih7reh2ty" path="res://art/ui/buttons/RefuelButton.png" id="3_gwsms"]
+[ext_resource type="Texture2D" uid="uid://b0d25x6ujj2lv" path="res://art/ui/buttons/RefuelButtonDown.png" id="4_boafh"]
+[ext_resource type="Script" path="res://ui/inventory/RefuelButton.cs" id="5_n8lno"]
+[ext_resource type="PackedScene" uid="uid://dcyybp4qh2glt" path="res://ui/crafting/CraftingPanel.tscn" id="6_i5l6w"]
+[ext_resource type="Script" path="res://ui/crafting/CraftingContainer.cs" id="6_v0nkf"]
 
-[node name="UI" type="CanvasLayer"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3mi4y"]
+texture = ExtResource("3_gwsms")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bttam"]
+texture = ExtResource("3_gwsms")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_h6sph"]
+texture = ExtResource("4_boafh")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_i07o7"]
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("IndicatorContainer", "TimeLabel", "CraftingStumpContainer", "CraftingStoolContainer")]
 script = ExtResource("1_vdpii")
+IndicatorContainer = NodePath("MarginContainer/RightHanger/IndicatorContainer")
+TimeLabel = NodePath("MarginContainer/RightHanger/NightTracker")
+CraftingStumpContainer = NodePath("MarginContainer/InventoryContainer/StumpCrafting")
+CraftingStoolContainer = NodePath("MarginContainer/InventoryContainer/StoolCrafting")
 
-[node name="InventoryContainer" type="VBoxContainer" parent="."]
-offset_left = 25.0
-offset_top = 21.0
-offset_right = 65.0
-offset_bottom = 96.0
+[node name="Dimmer" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Runtime" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 45
+theme_override_constants/margin_top = 45
+theme_override_constants/margin_right = 45
+theme_override_constants/margin_bottom = 45
+
+[node name="InventoryContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 25
 
-[node name="Inventory" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
+[node name="Inventory" parent="MarginContainer/InventoryContainer" instance=ExtResource("2_i6m15")]
 layout_mode = 2
 slotCount = 4
 columns = 4
 
-[node name="Inventory2" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
-layout_mode = 2
-type = 1
-slotCount = 1
-columns = 1
-
-[node name="Inventory3" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
+[node name="Inventory2" parent="MarginContainer/InventoryContainer" instance=ExtResource("2_i6m15")]
 layout_mode = 2
 type = 2
 slotCount = 6
 columns = 4
 
-[node name="Inventory4" parent="InventoryContainer" instance=ExtResource("2_i6m15")]
+[node name="Inventory3" parent="MarginContainer/InventoryContainer" instance=ExtResource("2_i6m15")]
 layout_mode = 2
-type = 3
+type = 1
 slotCount = 4
 columns = 4
 
-[node name="NightTracker" parent="." instance=ExtResource("2_bksgw")]
-offset_left = -289.0
-offset_top = 25.0
-offset_right = -53.0
-offset_bottom = 309.0
+[node name="Inventory4" parent="MarginContainer/InventoryContainer" instance=ExtResource("2_i6m15")]
+layout_mode = 2
+type = 3
+slotCount = 1
+columns = 1
+
+[node name="Space" type="Control" parent="MarginContainer/InventoryContainer/Inventory4"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/InventoryContainer/Inventory4" node_paths=PackedStringArray("campfireInv")]
+custom_minimum_size = Vector2(110, 110)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxTexture_3mi4y")
+theme_override_styles/hover = SubResource("StyleBoxTexture_bttam")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_h6sph")
+theme_override_styles/focus = SubResource("StyleBoxTexture_i07o7")
+action_mode = 0
+script = ExtResource("5_n8lno")
+campfireInv = NodePath("..")
+
+[node name="StoolCrafting" type="VBoxContainer" parent="MarginContainer/InventoryContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+script = ExtResource("6_v0nkf")
+buttonPath = "res://ui/crafting/StoolCraft.tscn"
+
+[node name="CraftingPanel" parent="MarginContainer/InventoryContainer/StoolCrafting" instance=ExtResource("6_i5l6w")]
+layout_mode = 2
+inputItems = ["Anglenose", "Firewood"]
+outputItems = ["CookedFish"]
+inputQuantity = [1, 2]
+outputQuantity = [1]
+
+[node name="CraftingPanel2" parent="MarginContainer/InventoryContainer/StoolCrafting" instance=ExtResource("6_i5l6w")]
+layout_mode = 2
+inputItems = ["Bluntnose", "Firewood"]
+outputItems = ["CookedFish"]
+inputQuantity = [1, 2]
+outputQuantity = [1]
+
+[node name="CraftingPanel3" parent="MarginContainer/InventoryContainer/StoolCrafting" instance=ExtResource("6_i5l6w")]
+layout_mode = 2
+inputItems = ["Spadefish", "Firewood"]
+outputItems = ["CookedFish"]
+inputQuantity = [1, 2]
+outputQuantity = [1]
+
+[node name="CraftingPanel4" parent="MarginContainer/InventoryContainer/StoolCrafting" instance=ExtResource("6_i5l6w")]
+layout_mode = 2
+inputItems = ["Pointfish", "Firewood"]
+outputItems = ["CookedFish"]
+inputQuantity = [1, 2]
+outputQuantity = [1]
+
+[node name="StumpCrafting" type="VBoxContainer" parent="MarginContainer/InventoryContainer"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+script = ExtResource("6_v0nkf")
+buttonPath = "res://ui/crafting/StumpCraft.tscn"
+
+[node name="CraftingPanel" parent="MarginContainer/InventoryContainer/StumpCrafting" instance=ExtResource("6_i5l6w")]
+layout_mode = 2
+inputItems = ["Firewood", "Coal"]
+outputItems = ["TorchItem"]
+inputQuantity = [1, 1]
+outputQuantity = [1]
+
+[node name="CraftingPanel2" parent="MarginContainer/InventoryContainer/StumpCrafting" instance=ExtResource("6_i5l6w")]
+layout_mode = 2
+inputItems = ["Log"]
+outputItems = ["Firewood"]
+inputQuantity = [1]
+outputQuantity = [3]
+
+[node name="RightHanger" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NightTracker" parent="MarginContainer/RightHanger" instance=ExtResource("2_bksgw")]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Spacer" type="Control" parent="MarginContainer/RightHanger"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="IndicatorContainer" type="VBoxContainer" parent="MarginContainer/RightHanger"]
+layout_mode = 2
+mouse_filter = 2
+
+[connection signal="button_down" from="MarginContainer/InventoryContainer/Inventory4/Button" to="MarginContainer/InventoryContainer/Inventory4/Button" method="OnButtonDown"]

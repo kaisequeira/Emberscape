@@ -1,10 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfw1cyucc4fre"]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Texture2D" uid="uid://odmobnqn4w6p" path="res://art/tiles/5.png" id="1_figug"]
 [ext_resource type="Script" path="res://tiles/Tile.cs" id="1_v3wt1"]
 [ext_resource type="Texture2D" uid="uid://ctyrl2gbcbpjf" path="res://art/tiles/5-Start.png" id="2_8jfuo"]
-[ext_resource type="PackedScene" uid="uid://betm04nqjn226" path="res://interactables/stations/5 - Lamp.tscn" id="2_wo780"]
-[ext_resource type="PackedScene" uid="uid://83y5mytxwni1" path="res://interactables/stations/5 - FallenTree.tscn" id="3_kfpa0"]
+[ext_resource type="PackedScene" path="res://interactables/stations/torches/5 - Lamp.tscn" id="2_wo780"]
+[ext_resource type="PackedScene" path="res://interactables/stations/fallenTree/FallenTree.tscn" id="3_kfpa0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mgucv"]
 size = Vector2(258, 23)

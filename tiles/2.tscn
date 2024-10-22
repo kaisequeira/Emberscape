@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://4xy1rdgowef7"]
+[gd_scene load_steps=11 format=3 uid="uid://q4mnohhl4jo4"]
 
 [ext_resource type="Script" path="res://tiles/Tile.cs" id="1_qu4jl"]
 [ext_resource type="Texture2D" uid="uid://dry5bguxuue8" path="res://art/tiles/2.png" id="1_r3b4x"]
-[ext_resource type="PackedScene" uid="uid://deq2hyvjotoyb" path="res://interactables/stations/2 - Torch.tscn" id="2_6pdh3"]
+[ext_resource type="PackedScene" path="res://interactables/stations/torches/2 - Torch.tscn" id="2_6pdh3"]
 [ext_resource type="Texture2D" uid="uid://ba0e71shvthji" path="res://art/tiles/2-Start.png" id="2_jcbj8"]
-[ext_resource type="PackedScene" uid="uid://dxj21droxwyt3" path="res://interactables/stations/2 - FishingSign.tscn" id="4_rh8k4"]
+[ext_resource type="PackedScene" uid="uid://dxoy4eim6dywp" path="res://misc/Water.tscn" id="5_n4r51"]
+[ext_resource type="PackedScene" uid="uid://dk6xtntb88yo" path="res://interactables/stations/fishing/FishingSign - Right.tscn" id="6_mxbny"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f086e"]
 size = Vector2(153, 23)
@@ -106,8 +107,10 @@ texture = ExtResource("1_r3b4x")
 [node name="Torch" parent="Stations" instance=ExtResource("2_6pdh3")]
 position = Vector2(129, 108)
 
-[node name="FishingSign" parent="Stations" instance=ExtResource("4_rh8k4")]
+[node name="FishingSign - Right" parent="Stations" node_paths=PackedStringArray("leftBound", "rightBound") instance=ExtResource("6_mxbny")]
 position = Vector2(93, 108)
+leftBound = NodePath("../../leftBound")
+rightBound = NodePath("../../rightBound")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(128, 72)
@@ -116,7 +119,16 @@ position = Vector2(128, 72)
 position = Vector2(-52.5, 60.5)
 shape = SubResource("RectangleShape2D_f086e")
 
+[node name="Water" parent="." instance=ExtResource("5_n4r51")]
+position = Vector2(128, 156)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_dwphe")
 }
+
+[node name="leftBound" type="Node2D" parent="."]
+position = Vector2(172, 140)
+
+[node name="rightBound" type="Node2D" parent="."]
+position = Vector2(275, 141)

@@ -4,37 +4,47 @@ public partial class DayManager : Node
 {
     [Export]
     private SubViewport Viewport;
-    private PackedScene UIScene;
-    private UI ui;
 
     private PackedScene DayScene;
-    private Day day;    
-    static private int dayCounter;
+    private Day day;
+
+    private PackedScene UiScene;
+    private UI ui;
+
+    private int dayNum = 3;
+    private AnimationPlayer animPlayer;
+    private CustomSignals CS;
 
     public override void _Ready()
     {
         DayScene = GD.Load<PackedScene>("res://days/Day.tscn");
-        UIScene = GD.Load<PackedScene>("res://ui/UI.tscn");
-        LoadDay(0);
+        UiScene = GD.Load<PackedScene>("res://ui/UI.tscn");
+        animPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+
+        CS = GetNode<CustomSignals>("/root/CustomSignals");
+        CS.Connect(CustomSignals.SignalName.DayEnded, new Callable(this, nameof(TransitionToScene)));
+        TransitionToScene();
     }
 
-    private void LoadDay(int offset)
-    {
-        dayCounter += offset;
+	public void TransitionToScene()
+	{
+        animPlayer.Play("FadeOut");
         
-        ui = UIScene.Instantiate<UI>();
+        if (day != null)
+            day.QueueFree();
+        if (ui != null)
+            ui.QueueFree();
+        
+        ui = UiScene.Instantiate() as UI;
         AddChild(ui);
-        // Initialise UI
 
-        day = DayScene.Instantiate<Day>();
+        day = DayScene.Instantiate() as Day;
         Viewport.AddChild(day);
-        day.Initialise(dayCounter);
-    }
 
-    public void EndDay()
-    {
-        day.QueueFree();
-        ui.QueueFree();
-        LoadDay(1);
-    }
+        day.Initialise(100, 120);
+
+        animPlayer.Play("FadeIn");
+	}
+
+    public int GetDayCount => dayNum;
 }

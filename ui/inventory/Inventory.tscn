@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://db6ifmtk30kmv"]
+
+[ext_resource type="Script" path="res://ui/inventory/Inventory.cs" id="1_aaxkx"]
+
+[node name="Inventory" type="BoxContainer"]
+offset_left = 2.0
+offset_right = 2.0
+mouse_filter = 2
+script = ExtResource("1_aaxkx")
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 25

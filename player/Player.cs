@@ -17,13 +17,15 @@ public partial class Player : CharacterBody2D
 	private bool facingRight = true;
 	private Inventory playerInv;
 
+	private Dictionary<string, float> modifiers = new Dictionary<string, float>();
+
 	public override void _Ready()
 	{
 		Animator = GetNode<AnimationPlayer>("AnimationPlayer");
 		GroundDetection = GetNode<RayCast2D>("RayCast2D");
 		CS = GetNode<CustomSignals>("/root/CustomSignals");
 
-		playerInv = InvManager.Get().GetInventory(Inventory.Types.Player);
+		playerInv = UI.Get().GetInventory(Inventory.Types.Player);
 		playerInv.SelectSlot(selectedSlot);
 	}
 
@@ -34,7 +36,9 @@ public partial class Player : CharacterBody2D
 		currentState.UpdateInputs();
 		currentState = currentState.Compute(this, delta);
 
-		SetDirectionFacing();
+		if (!(currentState is Interact))
+			UpdateDirectionFacing();
+
 		MoveAndSlide();
 	}
 
@@ -60,7 +64,7 @@ public partial class Player : CharacterBody2D
 			}
 			else if (curInteractable != null)
 			{
-				curInteractable.Disengage(this);
+				curInteractable.Disengage();
 			}
 		}
 
@@ -73,14 +77,53 @@ public partial class Player : CharacterBody2D
 		// Handle item drop
 		if (@event.IsActionPressed("drop") && !(currentState is Interact))
 		{
-			ItemStack itemStack = Inventory.DropSlot(playerInv.GetSlots()[selectedSlot]);
+			ItemStack itemStack = Inventory.DropSlot(playerInv.GetSlots()[selectedSlot], true);
 
 			if (!itemStack.IsEmpty())
 			{
-				CS.EmitSignal("SpawnItem", itemStack, new Vector2(), Vector2.Inf);
+				CS.EmitSignal(CustomSignals.SignalName.SpawnItem, itemStack, Vector2.Inf, Vector2.Inf);
+			}
+		}
+
+		// Consume item
+		if (@event.IsActionPressed("consume") && !(currentState is Interact))
+		{
+			Slot consumeSlot = playerInv.GetSlots()[selectedSlot];
+			ItemStack itemStack = new ItemStack(consumeSlot.GetItem(), consumeSlot.GetQuantity());
+
+			if (!itemStack.IsEmpty() && itemStack.GetItem() is Consumable)
+			{
+				Inventory.DropSlot(consumeSlot, false);
+				CS.EmitSignal(CustomSignals.SignalName.ConsumeFood, itemStack.GetQuantity() * ((Consumable) itemStack.GetItem()).GetConsumeValue());
 			}
 		}
 	}
+
+    public float GetModifiersProduct()
+    {
+        float product = 1.0f;
+        foreach (var modifier in modifiers.Values)
+        {
+            product *= modifier;
+        }
+        return product;
+    }
+
+    public void AddModifier(string key, float value)
+    {
+        if (modifiers.ContainsKey(key))
+            modifiers[key] = value;
+        else
+            modifiers.Add(key, value);
+    }
+
+    public void RemoveModifier(string key)
+    {
+        if (modifiers.ContainsKey(key))
+            modifiers.Remove(key);
+        else
+			return;
+    }
 
 	public int GetSelected()
 	{
@@ -102,13 +145,22 @@ public partial class Player : CharacterBody2D
 		Velocity = new Vector2(x ?? Velocity.X, y ?? Velocity.Y);
 	}
 
-	private void SetDirectionFacing()
-	{ 
-		if (((currentState.GetXInput() < 0 && facingRight) || (currentState.GetXInput() > 0 && !facingRight)) && (!(currentState is Interact))) 
+	private void UpdateDirectionFacing()
+	{
+		if (currentState.GetXInput() < 0 && facingRight) 
 		{
-			Scale = new Vector2(Scale.X * -1, Scale.Y);
-			facingRight = !facingRight;
+			SetDirectionFacing(false);
 		}
+		else if (currentState.GetXInput() > 0 && !facingRight)
+		{
+			SetDirectionFacing(true);
+		}
+	}
+
+	public void SetDirectionFacing(bool faceRight)
+	{
+		Scale = new Vector2(Scale.Y * (faceRight ? 1 : -1), Scale.Y);
+		facingRight = faceRight;
 	}
 
 	public bool IsFacingRight()
@@ -138,17 +190,33 @@ public partial class Player : CharacterBody2D
 			.OrderBy(interactable => GlobalPosition.DistanceTo(interactable.GetPosition()))
 			.FirstOrDefault();
 
-		if (curInteractable != newClosestInteractable)
-		{
-			if (IsInstanceValid(curInteractable)) curInteractable?.HighlightOff();
-			curInteractable = newClosestInteractable;
+		if (!(currentState is Interact) && IsInstanceValid(curInteractable))
+			curInteractable?.HighlightOff();
+		
+		curInteractable = newClosestInteractable;
+		
+		if (!(currentState is Interact))
 			curInteractable?.HighlightOn();
-		}
 	}
 
-	public void PlayAnimation(String animationName)
+	public void PlayAnimation(string animationName)
 	{
 		Animator.Play(animationName);
 	}
 
+	public string GetAnimation()
+	{
+		return Animator.CurrentAnimation;
+	}
+
+	public void ConnectAnimFinishToMethod(string functionName, Node node)
+	{
+		if (!Animator.IsConnected("animation_finished", new Callable(node, functionName)))
+			Animator.Connect("animation_finished", new Callable(node, functionName));
+	}
+
+	public void DrawFishingLine(Hook hook, bool faceRight)
+	{
+		GetNode<FishingLine>("FishingLine").DrawFishingLine(hook, faceRight);
+	}
 }

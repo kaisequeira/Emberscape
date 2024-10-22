@@ -31,4 +31,9 @@ public partial class ItemStack : Panel
     {
         return item == null || quantity <= 0;
     }
+
+    public bool IsFullStack()
+    {
+        return quantity >= item.GetMaxStack();
+    }
 }

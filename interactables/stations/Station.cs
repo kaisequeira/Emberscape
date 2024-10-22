@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public abstract partial class Station : Interactable
 {
 	private Tile tile;
-	private AnimationPlayer AnimationPlayer;
+	protected AnimationPlayer AnimationPlayer;
 
 	public virtual void Initialise(Tile tile)
 	{

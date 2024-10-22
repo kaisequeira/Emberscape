@@ -7,6 +7,8 @@
 script = ExtResource("1_oyg4n")
 
 [node name="NightTimer" type="Timer" parent="."]
+wait_time = 240.0
+one_shot = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(384, 216)
@@ -18,3 +20,5 @@ energy = 0.8
 blend_mode = 1
 range_item_cull_mask = 4
 texture = ExtResource("2_hugnt")
+
+[connection signal="timeout" from="NightTimer" to="." method="DayEnded"]

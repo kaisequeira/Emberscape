@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dailkf2yecdss"]
+
+[node name="CraftingSpacer" type="Control"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 20.0

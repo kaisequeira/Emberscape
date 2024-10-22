@@ -5,36 +5,35 @@ public abstract partial class Interactable : CharacterBody2D
 {
 	protected Sprite2D sprite2D;
 	private CollisionShape2D collisionShape2D;
-	private Inventory playerInv;
+
+	protected Player player;
+	protected Inventory playerInv;
+
+	protected CustomSignals CS;
+	
 	private bool canInteract = false;
 
-	public abstract void Interact();
+	public abstract string GetPlayerAnimation();
+
+	public abstract bool Interact();
 	
-	public bool Engage(Player player)
+	public virtual bool Engage(Player player)
 	{
-		if (Engaged(player))
-		{
-			HighlightOff();
-			playerInv.SelectSlot(Inventory.INVALID_SLOT);
-			return true;
-		}
-		return false;
+		HighlightOff();
+		playerInv.SelectSlot(Inventory.INVALID_SLOT);
+		this.player = player;
+		return true;
 	}
 
-	protected abstract bool Engaged(Player player);
-
-	public void Disengage(Player player)
+	public virtual void Disengage()
 	{
-		Disengaged(player);
 		playerInv.SelectSlot(player.GetSelected());
-		HighlightOn();
 	}
-
-	protected abstract void Disengaged(Player player);
 
 	public override void _Ready()
 	{
-		playerInv = InvManager.Get().GetInventory(Inventory.Types.Player);
+		playerInv = UI.Get().GetInventory(Inventory.Types.Player);
+		CS = GetNode<CustomSignals>("/root/CustomSignals");
 		sprite2D = GetNode<Sprite2D>("Sprite2D");
 		collisionShape2D = GetNode<Area2D>("Area2D")
 						  .GetNode<CollisionShape2D>("CollisionShape2D");

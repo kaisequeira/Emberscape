@@ -1,12 +1,9 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public abstract partial class State : Node
 {
-	protected const float ACCELERATION = 35.0f;
-	protected const float MAX_SPEED = 85.0f;
-	protected const float MIN_SPEED = 45.0f;
-
 	protected float xInput;
 	protected float yInput;
 

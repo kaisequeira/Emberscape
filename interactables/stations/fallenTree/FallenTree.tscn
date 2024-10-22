@@ -1,0 +1,150 @@
+[gd_scene load_steps=11 format=3 uid="uid://dnnoj2urgcn8g"]
+
+[ext_resource type="Script" path="res://interactables/stations/fallenTree/FallenTree.cs" id="1_ix3e2"]
+[ext_resource type="Texture2D" uid="uid://burfac28ub5ul" path="res://art/interactables/fallenTree/FallenTree - Default.png" id="2_uxtk5"]
+[ext_resource type="Texture2D" uid="uid://dppt8j7qt7vt7" path="res://art/interactables/fallenTree/FallenTree - Start.png" id="3_ktwbh"]
+[ext_resource type="Texture2D" uid="uid://c3vx3nm65afi5" path="res://art/interactables/fallenTree/WoodChip-Chips.png" id="4_0nf7o"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pcksl"]
+radius = 18.0
+
+[sub_resource type="Animation" id="Animation_8shrr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_uxtk5")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_ax4vk"]
+resource_name = "Start"
+length = 1.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_ktwbh")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [3]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8wm4m"]
+_data = {
+"RESET": SubResource("Animation_8shrr"),
+"Start": SubResource("Animation_ax4vk")
+}
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_ije4b"]
+particles_animation = true
+particles_anim_h_frames = 4
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_of0oc"]
+emission_shape = 3
+emission_box_extents = Vector3(12, 5, 1)
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+initial_velocity_max = 51.65
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+anim_offset_max = 1.0
+
+[node name="FallenTree" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_ix3e2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("2_uxtk5")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-35, -2, 20, -17, 23, -13, 35, -9, 41, 0, 20, 0, 25, -10, -20, 0)
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -12)
+shape = SubResource("CircleShape2D_pcksl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8wm4m")
+}
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_ije4b")
+position = Vector2(0, -11)
+emitting = false
+amount = 5
+process_material = SubResource("ParticleProcessMaterial_of0oc")
+texture = ExtResource("4_0nf7o")
+lifetime = 0.5
+one_shot = true
+preprocess = 0.1
+explosiveness = 0.09
+
+[connection signal="body_entered" from="Area2D" to="." method="AddToPlayer"]
+[connection signal="body_exited" from="Area2D" to="." method="RemoveFromPlayer"]

@@ -7,13 +7,15 @@
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -236.0
-offset_bottom = 284.0
+offset_left = -288.0
+offset_bottom = 316.0
 grow_horizontal = 0
+mouse_filter = 2
 script = ExtResource("1_8njby")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Night" type="Label" parent="HBoxContainer"]
 layout_mode = 2
@@ -33,5 +35,5 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_1y2ck")
 theme_override_font_sizes/font_size = 114
-text = "12:10"
+text = "12:00am"
 horizontal_alignment = 2

@@ -8,21 +8,19 @@ public partial class Interact : State
 	public Interact(Player player, Interactable interactable)
 	{
 		this.interactable = interactable;
-		interactable.Engage(player);
 	}
 
     public override State Compute(Player player, double delta)
     {
 		player.SetVelocity(Vector2.Zero);
-		interactable.Interact();
 
-		if (Input.IsActionJustPressed("escape"))
+		if (!interactable.Interact() || Input.IsActionJustPressed("escape"))
 		{
-			interactable.Disengage(player);
+			interactable.Disengage();
 			return new Idle();
 		}
 
-		player.PlayAnimation("idle");
+		player.PlayAnimation(interactable.GetPlayerAnimation());
 		return this;
     }
 }

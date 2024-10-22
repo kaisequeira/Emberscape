@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfr83cev17gjn"]
+
+[ext_resource type="Texture2D" uid="uid://dpvivqxnpachi" path="res://art/ui/indicators/rain/RainIndicator1.png" id="1_ecf0n"]
+[ext_resource type="Script" path="res://ui/indicators/Indicator.cs" id="2_v4chv"]
+
+[node name="RainIndicator" type="TextureRect"]
+custom_minimum_size = Vector2(150, 190)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 8
+mouse_filter = 2
+texture = ExtResource("1_ecf0n")
+stretch_mode = 5
+script = ExtResource("2_v4chv")
+frames = 7

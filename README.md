@@ -51,9 +51,9 @@ Emberscape is a 2D pixel art platformer game - currently in development - where 
 
 Emberscape is currently a work in progress. Come back soon to see more progress!
 
-## 📝 License
+## 📄 License
 
-This project is available under the [MIT License](LICENSE).
+This project contains no licensing and, thus, is protected under the default copyright laws.
 
 ## 🤝 Contact
 
